@@ -150,10 +150,13 @@ int main()
     if (inner_unique_ptr_valid(sig_p)) {
       (*sig_p)->connect(f5);   // connect to slot (functor)
     }
+
+    // local functors go out of scope!
   }
 
+  
   if (inner_unique_ptr_valid(sig_p)) {
-    (**sig_p)(); // emit signal
+    (**sig_p)();    // emit signal
     std::cout << "signal emit - Finished" << std::endl;
   }
 
