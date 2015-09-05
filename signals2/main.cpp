@@ -2,38 +2,7 @@
 #include <boost/signals2.hpp>
 #include <map>
 #include <memory>
-
-class BaseWrapper {
-  // Class used for monitoring constructor and destructor behaviour.
-  // Other classes just need to derive from this class!
-public:
-  BaseWrapper(const std::string &name_)
-    : name{name_}
-  {
-    std::cout << "#constructor      \t" << name << " (" << ++mm[name] << ')' << std::endl;    
-  }
-
-  BaseWrapper(const BaseWrapper &other)
-    : name{other.name}
-  {
-    std::cout << "#copy-constructor \t" << name << " (" << ++mm[name] << ')' << std::endl;
-  }
-
-  virtual ~BaseWrapper()
-  {
-    std::cout << "#destructor       \t" << name << " (" << (mm[name])-- << ')' << std::endl;
-  }
-
-  const std::string &get_name() const {return name; };
-private:
-  static std::map<const std::string, int> mm;
-  const std::string name;
-};
-
-std::map<const std::string, int> BaseWrapper::mm;
-  
-
-
+#include "basewrapper.h"
 
 using FuncSig  = void();
 
