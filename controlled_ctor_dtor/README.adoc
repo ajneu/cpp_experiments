@@ -1,0 +1,32 @@
+= Controlled ctor dtor
+
+Some interesting constructor/destructor examples.
+
+* `std::shared_ptr<std::unique_ptr<T>>`
++
+Like a globally tracked resource that you can delete anywhere! +
+This should behave like shared_ptr, but one whose content can be globally destructed from anywhere. +
+Anybody still having access, needs to check if it has been destructed. +
+If nobody has access anymore, it needs to destruct itself.
++
+[source,cpp]
+----
+// The usage is thus:
+if (inner_unique_ptr_valid(sig_p)) { // check if still valid
+   (**sig_p).member();               // access
+}
+// The two steps above would need to be mutex-protected in a multithreaded environment
+
+// To globally destruct:
+if (sig_p) {                         // check that shared_ptr is actually holding a pointer (in this case a unique_ptr)
+   (*sig_p).reset();                 // reset the unique_ptr
+}
+----
+
+* `std::experimental::optional<T>`
++
+Construct and destruct anywhere, and work on the stack (not heap!)
+
+* `StackConstr<T>`
++
+Own example of constructing and destructing anywhere, and working on the stack (not heap).
