@@ -1,0 +1,5 @@
+= Boost.Signals2
+
+Amonst various signals/slots libraries (https://github.com/NoAvailableAlias/nano-signal-slot/tree/master/benchmark#performance[examples]), Boost Signals2 is very good choice, regarding *safety* and *flexibility*. (There is a tradeoff with speed: you cannot get everything).
+
+The example shows a 2 slots (functors) being connected to a signal. When the signal is emitted, the first triggered slot actually calls the signal'ss destructor! This does not destruct the slot, it continues; and even the second slot is nicely executed. Only after the slots have called, will the slot (functor) destructors be called. Now that's safe code!!!
