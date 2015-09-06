@@ -22,8 +22,8 @@ if (sig_p) {                         // check that shared_ptr is actually holdin
    (*sig_p).reset();                 // reset the unique_ptr
 }
 ----
-
-See also https://github.com/ajneu/cpp_experiments/tree/master/refcnt_placement_new[refcnt_placement_new] for a similar idea, but realized with placement new (i.e. typically on the stack).
++
+**See also directory https://github.com/ajneu/cpp_experiments/tree/master/refcnt_placement_new[refcnt_placement_new] ** for a similar idea, but realized with placement new (i.e. typically on the stack).
 
 * `std::experimental::optional<T>`
 +
