@@ -27,6 +27,6 @@ if (sig_p) {                         // check that shared_ptr is actually holdin
 +
 Construct and destruct anywhere, and work on the stack (not heap!)
 
-* `StackConstr<T>`
+* `PlaceStackConstr<T>`
 +
 Own example of constructing and destructing anywhere, and working on the stack (not heap).
