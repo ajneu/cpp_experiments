@@ -4,26 +4,55 @@
 #include "basewrapper.h"
 
 template<typename T>
-class StackConstr {
+class PlaceStackConstr {
 public:
   template <typename... Params>
-  StackConstr(Params&&... args) : inst( ::new (buf) T(std::forward<Params>(args)...) ) {}
-  ~StackConstr() { destruct(); }
+  PlaceStackConstr(Params&&... args) : is_destructed{(::new (&buf) T(std::forward<Params>(args)...), false)} { }
+  ~PlaceStackConstr() { destruct(); }
   
-  T &operator*() { return *inst; }
-  T *operator->() { return inst; }
+  T &operator*()  { return *reinterpret_cast<T*>(&buf); }
+  T *operator->() { return  reinterpret_cast<T*>(&buf); }
   void destruct()
   {
-    if (inst) {
-      inst->~T();
-      inst = nullptr;
+    if (!is_destructed) {
+      reinterpret_cast<T*>(&buf)->~T();
+      is_destructed = true;
     }
   }
 private:
-  T *inst;
-  alignas(T) unsigned char buf[sizeof(T)];
+  using buf_t = typename std::aligned_storage<sizeof(T), alignof(T)>::type;
+  buf_t buf;      //alignas(alignof(T)) unsigned char buf[sizeof(T)];
+  bool is_destructed;
 };
 
+class RefCount {
+public:
+  RefCount() : cnt_p{new decltype(*cnt_p+0){1U}} {}
+  RefCount(const RefCount &other) : cnt_p{&(++(*other.cnt_p))} {}
+  ~RefCount()
+  {
+    if (--*cnt_p == 0) {
+      delete cnt_p;
+      std::cout << "delete" << std::endl;
+    }
+  }
+private:
+  size_t *cnt_p;
+};
+
+class RefCountPlace{
+public:
+  RefCountPlace(size_t *p) : cnt_p{(*p = 1U, p)} {}
+  RefCountPlace(const RefCountPlace &other) : cnt_p{&(++(*other.cnt_p))} {}
+  ~RefCountPlace()
+  {
+    if (--*cnt_p == 0) {
+      std::cout << "delete" << std::endl;
+    }
+  }
+private:
+  size_t *cnt_p;
+};
 
 
 template<typename T>
@@ -112,12 +141,33 @@ int main()
   std::cout << '\n' << std::endl;
   
   {
-    StackConstr<BaseWrapper> b7("b7");
+    PlaceStackConstr<BaseWrapper> b7("b7");
     std::cout << (*b7).get_name() << std::endl;
     std::cout << b7->get_name() << std::endl;
     b7.destruct();
     std::cout << "destructed (but b7 not yet out of scope)" << std::endl;
   }
+
+  std::cout << '\n' << std::endl;
   
+  {
+    RefCount r;
+    RefCount r2 = r;
+    {
+      RefCount r3 = r2;
+    }
+  }
+
+  std::cout << '\n' << std::endl;
+  
+  {
+    size_t x;
+    RefCountPlace r(&x);
+    RefCountPlace r2 = r;
+    {
+      RefCountPlace r3 = r2;
+    }
+  }
+
   return 0;
 }

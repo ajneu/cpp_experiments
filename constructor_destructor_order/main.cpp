@@ -11,19 +11,24 @@ struct B2 {
 };
 
 
-struct A {
-  A()  { std::cout << "A()" << std::endl; }
-  ~A() { std::cout << "~A()" << std::endl; }
+struct A1 {
+  A1()  { std::cout << "A1()" << std::endl; }
+  ~A1() { std::cout << "~A1()" << std::endl; }
 };
 
 
+struct A2 {
+  A2()  { std::cout << "A2()" << std::endl; }
+  ~A2() { std::cout << "~A2()" << std::endl; }
+};
 
 struct D : public B1, public B2 {
-  D() : a{} { std::cout << "D()" << std::endl; }
+  D() : a1{} { std::cout << "D()" << std::endl; }
   ~D(     ) { std::cout << "~D()" << std::endl; }
 
 private:
-  A a;
+  A1 a1;
+  A2 a2;
 };
 
 
