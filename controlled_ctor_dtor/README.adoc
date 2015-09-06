@@ -23,6 +23,8 @@ if (sig_p) {                         // check that shared_ptr is actually holdin
 }
 ----
 
+See also https://github.com/ajneu/cpp_experiments/tree/master/refcnt_placement_new[refcnt_placement_new] for a similar idea, but realized with placement new (i.e. typically on the stack).
+
 * `std::experimental::optional<T>`
 +
 Construct and destruct anywhere, and work on the stack (not heap!)
