@@ -1,6 +1,5 @@
 #include <iostream>
 #include <boost/signals2.hpp>
-#include <map>
 #include <memory>
 #include "basewrapper.h"
 
