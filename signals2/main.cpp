@@ -61,7 +61,12 @@ private:
   bool destruct_sig;
 };
 
-
+void my_connect(const std::shared_ptr<std::unique_ptr<Signal_t>> &sig_p, const Signal_t::slot_type &slot)
+{
+    if (inner_unique_ptr_valid(sig_p)) {
+      (*sig_p)->connect(slot);   // connect to slot (functor)
+    }
+}
 
 int main()
 {
@@ -92,33 +97,23 @@ int main()
   
   {
     Functor f1{sig_p, "f1"};
-    if (inner_unique_ptr_valid(sig_p)) {
-      (*sig_p)->connect(f1);   // connect to slot (functor)
-    }
+    my_connect(sig_p, f1);
 
     Functor f2{sig_p, "f2"};
-    if (inner_unique_ptr_valid(sig_p)) {
-      (*sig_p)->connect(f2);   // connect to slot (functor)
-    }
-
+    my_connect(sig_p, f2);
+    
     Functor f3{sig_p, "f3"
 #ifdef DELETE_SIG_IN_FUNCTOR_SLOT
                           , true   // this functor-slot, should destruct the signal
 #endif
               };
-    if (inner_unique_ptr_valid(sig_p)) {
-      (*sig_p)->connect(f3);   // connect to slot (functor)
-    }
+    my_connect(sig_p, f3);
 
     Functor f4{sig_p, "f4"};
-    if (inner_unique_ptr_valid(sig_p)) {
-      (*sig_p)->connect(f4);   // connect to slot (functor)
-    }
+    my_connect(sig_p, f4);
 
     Functor f5{sig_p, "f5"};
-    if (inner_unique_ptr_valid(sig_p)) {
-      (*sig_p)->connect(f5);   // connect to slot (functor)
-    }
+    my_connect(sig_p, f5);
 
     // local functors go out of scope!
   }
