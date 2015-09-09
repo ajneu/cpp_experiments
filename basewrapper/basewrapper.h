@@ -15,7 +15,7 @@ public:
 
   const std::string &get_name() const {return name; };
 private:
-  static std::map<const std::string, int> mm;
+  static std::map<const BaseWrapper* const, int> mm;
   const std::string name;
 };
 
