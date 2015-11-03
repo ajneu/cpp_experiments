@@ -42,7 +42,7 @@ public:
 
   void operator()() {
     std::cout << "      >>>>>>>>>>>>>>>>>>>>>>\n"
-              << "      (" << get_name() << ")         Functor::operator()()" << std::endl;
+              << "      (" << get_data() << ")         Functor::operator()()" << std::endl;
     if (destruct_sig) {
       if (inner_unique_ptr_valid(sig_p)) {
         (*sig_p).reset(); // reset unique_ptr    (it's content is replaced with nullptr, and the previous ptr-content deleted)
@@ -51,7 +51,7 @@ public:
         std::cout << "                   sig already deleted" << std::endl;
       }
     }
-    std::cout << "      (" << get_name() << ") Done -- Functor::operator()()\n"
+    std::cout << "      (" << get_data() << ") Done -- Functor::operator()()\n"
               << "      -----------------------" << std::endl;
   }
 

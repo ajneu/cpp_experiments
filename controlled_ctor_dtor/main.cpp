@@ -25,11 +25,11 @@ private:
   bool is_destructed;
 };
 
-class RefCount {
+class RefCount1 {
 public:
-  RefCount() : cnt_p{new decltype(*cnt_p+0){1U}} {}
-  RefCount(const RefCount &other) : cnt_p{&(++(*other.cnt_p))} {}
-  ~RefCount()
+  RefCount1() : cnt_p{new decltype(*cnt_p+0){1U}} {}
+  RefCount1(const RefCount1 &other) : cnt_p{&(++(*other.cnt_p))} {}
+  ~RefCount1()
   {
     if (--*cnt_p == 0) {
       delete cnt_p;
@@ -73,13 +73,13 @@ void reset_func(std::shared_ptr<std::unique_ptr<BaseWrapper>> b)
 void print_func(std::shared_ptr<std::unique_ptr<BaseWrapper>> b)
 {
   if (inner_unique_ptr_valid(b)) {
-    std::cout << (**b).get_name() << std::endl;
+    std::cout << (**b).get_data() << std::endl;
   }
 
   reset_func(b);
 
   if (inner_unique_ptr_valid(b)) {
-    std::cout << (**b).get_name() << std::endl;
+    std::cout << (**b).get_data() << std::endl;
   } else {
     std::cout << "been deleted" << std::endl;
   }
@@ -142,8 +142,8 @@ int main()
   
   {
     PlaceStackConstr<BaseWrapper> b7("b7");
-    std::cout << (*b7).get_name() << std::endl;
-    std::cout << b7->get_name() << std::endl;
+    std::cout << (*b7).get_data() << std::endl;
+    std::cout << b7->get_data() << std::endl;
     b7.destruct();
     std::cout << "destructed (but b7 not yet out of scope)" << std::endl;
   }
@@ -151,10 +151,10 @@ int main()
   std::cout << '\n' << std::endl;
   
   {
-    RefCount r;
-    RefCount r2 = r;
+    RefCount1 r;
+    RefCount1 r2 = r;
     {
-      RefCount r3 = r2;
+      RefCount1 r3 = r2;
     }
   }
 

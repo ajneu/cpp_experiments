@@ -33,7 +33,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Sources and Target Name
 ##############
 include_directories(../basewrapper)
-set(src1    ../basewrapper/basewrapper.cpp main.cpp)
+set(src1     main.cpp)
 set(target1 go)
 
 ##############

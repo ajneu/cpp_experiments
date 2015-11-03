@@ -36,9 +36,9 @@ public:
 
   void operator()() {
     std::cout << "      >>>>>>>>>>>>>>>>>>>>>>\n"
-              << "      (" << get_name() << ")         Functor::operator()()" << std::endl;
+              << "      (" << get_data() << ")         Functor::operator()()" << std::endl;
     if (destruct_conn) {
-      auto it = map_conn.find(get_name());
+      auto it = map_conn.find(get_data());
       if (it != map_conn.cend()) {
         it->second.disconnect();
         map_conn.erase(it);
@@ -47,7 +47,7 @@ public:
         std::cout << "                   Connection already disconnected" << std::endl;
       }
     }
-    std::cout << "      (" << get_name() << ") Done -- Functor::operator()()\n"
+    std::cout << "      (" << get_data() << ") Done -- Functor::operator()()\n"
               << "      -----------------------" << std::endl;
   }
 
@@ -69,11 +69,11 @@ int main()
     
     Functor f1{map_conn, "f1"};
     conn = sig.connect(f1);
-    map_conn.emplace(f1.get_name(), conn);
+    map_conn.emplace(f1.get_data(), conn);
 
     Functor f2{map_conn, "f2"};
     conn = sig.connect(f2);
-    map_conn.emplace(f2.get_name(), conn);
+    map_conn.emplace(f2.get_data(), conn);
     
     Functor f3{map_conn, "f3"
 #ifdef DELETE_SIG_IN_FUNCTOR_SLOT
@@ -81,15 +81,15 @@ int main()
 #endif
               };
     conn = sig.connect(f3);
-    map_conn.emplace(f3.get_name(), conn);
+    map_conn.emplace(f3.get_data(), conn);
 
     Functor f4{map_conn, "f4"};
     conn = sig.connect(f4);
-    map_conn.emplace(f4.get_name(), conn);
+    map_conn.emplace(f4.get_data(), conn);
 
     Functor f5{map_conn, "f5"};
     conn = sig.connect(f5);
-    map_conn.emplace(f5.get_name(), conn);
+    map_conn.emplace(f5.get_data(), conn);
 
 
     // local functors go out of scope!
