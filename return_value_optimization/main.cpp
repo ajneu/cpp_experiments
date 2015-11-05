@@ -38,10 +38,10 @@ public:
 
 
 // uncomment one of the following
-//#define RETURN_VALUE_OPTIMIZATION
-#undef  RETURN_VALUE_OPTIMIZATION
+#define RETURN_VALUE_OPTIMIZATION
+//#undef  RETURN_VALUE_OPTIMIZATION
 
-#ifndef RETURN_VALUE_OPTIMIZATION
+#ifdef RETURN_VALUE_OPTIMIZATION
 A get(int i) {
    A tmp{0};
    if (i % 2 == 0)
